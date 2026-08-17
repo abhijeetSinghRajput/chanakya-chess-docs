@@ -68,7 +68,7 @@ BLACK ROOK   = 12,
 BLACK QUEEN  = 13, 
 BLACK KING   = 14,
 
-PIECE_NB = 16
+PIECE_NB     = 16
 ```
 
 
@@ -148,16 +148,16 @@ Use them only inside search, like this:
 ```cpp
 if (doMove(move))
 {
-    updateNNUE(encode(move)); 
-    // move encoding used in updateNNUE
-    // 0000 0000 0000 0000 0000 0000 1111   piece moved
-    // 0000 0000 0000 0000 0011 1111 0000   from
-    // 0000 0000 0000 1111 1100 0000 0000   to
-    // 0000 0000 1111 0000 0000 0000 0000   capture piece
-    // 0000 1111 0000 0000 0000 0000 0000   promoted piece
-    // 0001 0000 0000 0000 0000 0000 0000   enpassant flag
-    // 0010 0000 0000 0000 0000 0000 0000   castle flag
-    // 1000 0000 0000 0000 0000 0000 0000   pawnstart flag
+    void updateNNUE(
+      int  side,              // captured BEFORE doMove flips it
+      int  piece,
+      int  from,
+      int  to,
+      int  capture_piece,
+      int  promotion_piece,
+      bool is_castling,
+      bool is_enpassant
+    );
 
     // ... recurse ...
 
@@ -165,6 +165,8 @@ if (doMove(move))
     takeMove();
 }
 ```
+> **Note:** The piece encoding used by `updateNNUE()` must follow the
+> [Required piece encoding](#21-required-piece-encoding) defined above.
 
 That's it. Don't call `updateNNUE`/`revertNNUE` anywhere else — not in
 UCI, not in perft

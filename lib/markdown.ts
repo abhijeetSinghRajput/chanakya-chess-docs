@@ -58,7 +58,7 @@ function rehypeHeadingLinks() {
             type: "element",
             tagName: "span",
             properties: { className: ["heading-mark"] },
-            children: [{ type: "text", value: "#" }],
+            children: [{ type: "text", value: " #" }],
           },
         ],
       };
@@ -209,35 +209,6 @@ export async function getHeadings(markdown: string): Promise<Heading[]> {
   void file;
   return headings;
 }
-
-// theme: "github-dark"
-// theme: "github-light"
-// theme: "github-dark-default"
-// theme: "github-light-default"
-
-// theme: "one-dark-pro"
-// theme: "one-light"
-
-// theme: "dracula"
-
-// theme: "material-theme"
-// theme: "material-theme-darker"
-// theme: "material-theme-lighter"
-
-// theme: "nord"
-// theme: "monokai"
-
-// theme: "vesper"
-
-// theme: "tokyo-night"
-// theme: "tokyo-night-storm"
-
-// theme: "catppuccin-mocha"
-// theme: "catppuccin-latte"
-
-// theme: "andromeeda"
-
-// theme: "slack-dark"
 
 export async function markdownToHtml(markdown: string): Promise<string> {
   const file = await unified()

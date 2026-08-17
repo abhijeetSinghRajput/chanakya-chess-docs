@@ -10,6 +10,7 @@ import TableOfContents from "@/components/TableOfContents";
 import CodeCopyHandler from "@/components/CodeCopyHandler";
 import BitboardMotif from "@/components/BitboardMotif";
 import { ArrowLeftIcon, ClockIcon } from "lucide-react";
+import Image from "next/image";
 
 export function generateStaticParams() {
   return [{ slug: "integrating-stockfish-nnue" }];
@@ -40,25 +41,39 @@ export default async function BlogPostPage({
 
       <main className="relative z-10">
         {/* ---------- Hero ---------- */}
-        <div className="relative overflow-hidden border-b border-[color:var(--hairline)]">
-          <BitboardMotif />
-          <div className="relative mx-auto max-w-3xl px-6 pt-20 pb-14 text-center">
-            <p className="font-mono text-[11px] tracking-[0.18em] uppercase text-[color:var(--brass)] mb-5">
-              Engine notes
-            </p>
-            <h1 className="font-display text-[2.1rem] leading-[1.12] sm:text-[2.75rem] font-medium text-[color:var(--ink)] text-balance">
+        <div className="relative">
+          <div
+            className="absolute inset-0 z-[-1] w-full h-80 overflow-hidden bg-(--bg)"
+            style={{
+              maskImage: "linear-gradient(black 40%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(black 40%, transparent 100%)",
+            }}
+          >
+            <Image
+              src="/banner-4.png"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="pointer-events-none select-none object-cover mix-blend-overlay grayscale halftone"
+            />
+          </div>
+
+          <header className="mx-auto flex w-full max-w-3xl flex-col items-center gap-y-5 px-6 pt-56 text-center">
+            <h1 className="font-display text-balance text-[2.1rem] leading-[1.12] sm:text-[2.75rem] font-medium text-(--ink)">
               {meta.title}
             </h1>
-            <p className="mt-5 text-[1.05rem] leading-relaxed text-[color:var(--ink-mute)] max-w-xl mx-auto text-balance">
+            <p className="max-w-xl text-pretty text-[1.05rem] leading-relaxed text-(--ink-mute)">
               {meta.subtitle}
             </p>
+          </header>
 
-            <div className="mt-8 flex items-center justify-center gap-4 text-[13px] text-[color:var(--ink-mute)]">
+          <div className="mt-16 px-6">
+            <div className="mx-auto flex w-full max-w-3xl flex-wrap items-center justify-evenly gap-x-4 gap-y-2 text-[13px] text-(--ink-mute)">
               <span className="flex items-center gap-1.5">
                 <ClockIcon className="size-4" />
                 {meta.readingMinutes} min read
               </span>
-              <span className="h-3 w-px bg-[color:var(--hairline)]" />
               <span>Updated {meta.updated}</span>
             </div>
           </div>
@@ -71,7 +86,7 @@ export default async function BlogPostPage({
               <TableOfContents headings={headings} />
               <Link
                 href="/"
-                className="mt-8 hidden lg:flex items-center gap-1.5 font-mono text-[11px] text-[color:var(--ink-mute)] hover:text-[color:var(--brass)] transition-colors"
+                className="mt-8 hidden lg:flex items-center gap-1.5 font-mono text-[11px] text-(--ink-mute) hover:text-(--brass) transition-colors"
               >
                 <ArrowLeftIcon />
                 Back to Chanakya
@@ -85,12 +100,12 @@ export default async function BlogPostPage({
           />
         </div>
 
-        <footer className="border-t border-[color:var(--hairline)]">
-          <div className="mx-auto max-w-3xl px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-[color:var(--ink-mute)]">
+        <footer className="border-t border-(--hairline)">
+          <div className="mx-auto max-w-3xl px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-(--ink-mute)">
             <span>Written while debugging Chanakya&apos;s NNUE port.</span>
             <Link
               href="/blog/integrating-stockfish-nnue"
-              className="font-mono text-[color:var(--brass)] hover:underline underline-offset-4"
+              className="font-mono text-(--brass) hover:underline underline-offset-4"
             >
               #{slug}
             </Link>

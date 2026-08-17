@@ -12,7 +12,7 @@
   --brass: #c9a24b;
   --brass-dim: #8a743a;
   --brass-glow: rgba(201, 162, 75, 0.14);
-  --code-bg: #0c0c09;
+  --code-bg: hsl(60, 14%, 6%);
   --code-tab-bg: #23241c;
 
   --font-display: "Fraunces", serif;
@@ -116,8 +116,51 @@ body {
   margin-top: 2.25em;
 }
 
+/* ---------- Blockquote ---------- */
+
+.prose-article blockquote {
+  position: relative;
+  margin: 1.75em 0;
+  padding: 0.9em 1.25em 0.9em 1.4em;
+
+  border-left: 3px solid var(--brass);
+  background: linear-gradient(
+    90deg,
+    var(--brass-glow),
+    transparent
+  );
+
+  color: #d9d5c9;
+  font-family: var(--font-display);
+  font-size: 1.08em;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.prose-article blockquote::before {
+  content: "“";
+  position: absolute;
+  left: 0.35rem;
+  top: -0.35rem;
+
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 1;
+
+  color: var(--brass);
+  opacity: 0.45;
+}
+
+.prose-article blockquote p {
+  margin: 0;
+  color: inherit;
+}
+
+.prose-article blockquote p + p {
+  margin-top: 1em;
+}
+
 .heading-link {
-  display: inline-flex;
   align-items: baseline;
   gap: 0.55rem;
   color: inherit;
@@ -126,7 +169,7 @@ body {
 
 .heading-link .heading-mark {
   font-family: var(--font-mono);
-  font-size: 0.55em;
+  font-size: 0.8em;
   font-weight: 500;
   color: var(--brass-dim);
   opacity: 0;
