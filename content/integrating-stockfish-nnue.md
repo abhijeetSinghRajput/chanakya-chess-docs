@@ -32,19 +32,27 @@ nn-37f18f62d772.nnue
 
 ---
 
-## 2. `position.h` — connect with own state
+## 2. Create `position.h`
+In the same location where you copied the `nnue/` folder, create a new file named `position.h`.
 
-This is the one file you write yourself. It's the entire bridge between
-your board and Stockfish's NNUE code. The NNUE feature transformer and
-accumulator logic call a small, fixed set of methods on `Position` —
-implement these against your own `board`/`bitboard` state and the rest
-of the NNUE machinery works unmodified.
+Your structure should look like this:
+```
+nnue/ 
+incbin/ 
+memory.cpp
+memory.h
+misc.cpp
+misc.h
+types.h
+position.h    ← create this file
 
-### 2.1 Required piece encoding
+nn-1c0000000000.nnue
+nn-37f18f62d772.nnue
+```
 
-Stockfish's `Piece` enum has a specific layout that the NNUE feature
-tables are indexed against. Whatever your own piece encoding looks
-like, you need a **stable, cheap conversion** in both directions:
+### 2.1 Piece encoding
+
+Stockfish's NNUE expects the following piece encoding:
 
 ```cpp
 NO_PIECE     =  0,
@@ -65,15 +73,16 @@ BLACK KING   = 14,
 
 PIECE_NB     = 16
 ```
+If your engine uses a different piece representation, add a conversion between your piece encoding and Stockfish's encoding.
 
 
-### 2.2 The interface
+### 2.2 Add The `Position` interface
 
-Below is the **empty-body contract** every adopter must fill in. Every
-method signature must match exactly — return types, `const`-ness, and
-template parameters are all load-bearing, since NNUE code calls these
-through templates instantiated at compile time, not through virtual
-dispatch.
+Use Chanakya's `position.h` as a reference:
+
+[Chanakya's position.h](https://github.com/abhijeetSinghRajput/chanakya/blob/incremental-nnue/src/position.h)
+
+Then copy and paste this code:
 
 ```cpp
 #ifndef POSITION_H_INCLUDED
@@ -83,46 +92,34 @@ namespace Stockfish {
 
 class Position {
 public:
-    // Whose turn it is.
     Color side_to_move() const { }
 
-    // Piece sitting on a square, or NO_PIECE.
     Piece piece_on(Square s) const { }
 
-    // Board mutation hooks — called only from your doMove/undoMove
-    // wrapper (see part 3), never directly by NNUE code, but required
-    // so your move-decoding layer can update the board through one
-    // consistent path.
     void put_piece(Piece pc, Square s) { }
     void remove_piece(Square s) { }
 
-    // Square of the king of color c. Only ever instantiated with
-    // Pt = KING by NNUE code — you can ignore Pt entirely in your
-    // implementation and just look up the king.
     template<PieceType Pt>
     Square square(Color c) const;
 
-    // Bitboard queries / occupancy.
-    Bitboard pieces() const { }                       // all pieces
-    Bitboard pieces(Color c) const { }                // one side
-    Bitboard pieces(PieceType pt) const { }           // one piece type, both sides
-    Bitboard pieces(Color c, PieceType pt) const { }  // one side, one type
+    Bitboard pieces() const { }
+    Bitboard pieces(Color c) const { }
+    Bitboard pieces(PieceType pt) const { }
+    Bitboard pieces(Color c, PieceType pt) const { }
 
-    // Piece counts.
     template<PieceType Pt>
-    int count() const { }               // both sides (Pt = ALL_PIECES supported)
-    template<PieceType Pt>
-    int count(Color c) const { }        // one side
+    int count() const { }
 
-    // Material, in Stockfish centipawn units, excluding pawns and kings.
+    template<PieceType Pt>
+    int count(Color c) const { }
+
     int non_pawn_material(Color c) const { }
     int non_pawn_material() const { }
 
-    // Halfmove clock (used for the 50-move eval scaling term).
     int rule50_count() const { }
 };
 
-}  // namespace Stockfish
+} // namespace Stockfish
 
 #endif
 ```
