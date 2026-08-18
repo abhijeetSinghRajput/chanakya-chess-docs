@@ -20,6 +20,9 @@ modification:
 ```
 nnue/          (entire folder)
 incbin/        (entire folder)
+eval/
+└── eval_nnue.cpp
+└── eval_nnue.hpp
 memory.cpp
 memory.h
 misc.cpp
@@ -38,7 +41,10 @@ In the same location where you copied the `nnue/` folder, create a new file name
 Your structure should look like this:
 ```
 nnue/ 
-incbin/ 
+incbin/
+eval/
+└── eval_nnue.cpp
+└── eval_nnue.hpp
 memory.cpp
 memory.h
 misc.cpp
