@@ -14,7 +14,7 @@ The integration has three parts:
 
 ## 1. Files to copy
 
-From a Stockfish source tree, copy these into your project without
+From a [Chanakya](https://github.com/abhijeetSinghRajput/chanakya/tree/incremental-nnue) source tree, copy these into your project without
 modification:
 
 ```
@@ -29,11 +29,6 @@ types.h
 nn-1c0000000000.nnue
 nn-37f18f62d772.nnue
 ```
-
-Do **not** copy `position.cpp` or the rest of `position.h` — you are
-replacing those with your own adapter below. NNUE code only ever
-*calls* `Position`, it never depends on Stockfish's internal board
-representation directly.
 
 ---
 
@@ -89,17 +84,17 @@ namespace Stockfish {
 class Position {
 public:
     // Whose turn it is.
-    Color side_to_move() const;
+    Color side_to_move() const { }
 
     // Piece sitting on a square, or NO_PIECE.
-    Piece piece_on(Square s) const;
+    Piece piece_on(Square s) const { }
 
     // Board mutation hooks — called only from your doMove/undoMove
     // wrapper (see part 3), never directly by NNUE code, but required
     // so your move-decoding layer can update the board through one
     // consistent path.
-    void put_piece(Piece pc, Square s);
-    void remove_piece(Square s);
+    void put_piece(Piece pc, Square s) { }
+    void remove_piece(Square s) { }
 
     // Square of the king of color c. Only ever instantiated with
     // Pt = KING by NNUE code — you can ignore Pt entirely in your
@@ -108,23 +103,23 @@ public:
     Square square(Color c) const;
 
     // Bitboard queries / occupancy.
-    Bitboard pieces() const;                       // all pieces
-    Bitboard pieces(Color c) const;                // one side
-    Bitboard pieces(PieceType pt) const;           // one piece type, both sides
-    Bitboard pieces(Color c, PieceType pt) const;  // one side, one type
+    Bitboard pieces() const { }                       // all pieces
+    Bitboard pieces(Color c) const { }                // one side
+    Bitboard pieces(PieceType pt) const { }           // one piece type, both sides
+    Bitboard pieces(Color c, PieceType pt) const { }  // one side, one type
 
     // Piece counts.
     template<PieceType Pt>
-    int count() const;               // both sides (Pt = ALL_PIECES supported)
+    int count() const { }               // both sides (Pt = ALL_PIECES supported)
     template<PieceType Pt>
-    int count(Color c) const;        // one side
+    int count(Color c) const { }        // one side
 
     // Material, in Stockfish centipawn units, excluding pawns and kings.
-    int non_pawn_material(Color c) const;
-    int non_pawn_material() const;
+    int non_pawn_material(Color c) const { }
+    int non_pawn_material() const { }
 
     // Halfmove clock (used for the 50-move eval scaling term).
-    int rule50_count() const;
+    int rule50_count() const { }
 };
 
 }  // namespace Stockfish
