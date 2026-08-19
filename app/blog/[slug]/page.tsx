@@ -50,7 +50,7 @@ export default async function BlogPostPage({
             }}
           >
             <Image
-              src="/banner-4.png"
+              src={meta.cover}
               alt=""
               fill
               priority
@@ -86,16 +86,16 @@ export default async function BlogPostPage({
               <TableOfContents headings={headings} />
               <Link
                 href="/"
-                className="mt-8 hidden lg:flex items-center gap-1.5 font-mono text-[11px] text-(--ink-mute) hover:text-(--brass) transition-colors"
+                className="mt-8 hidden  lg:flex items-center gap-1.5 font-mono text-[11px] text-(--ink-mute) hover:text-(--brass) transition-colors"
               >
-                <ArrowLeftIcon />
+                <ArrowLeftIcon className="size-4" />
                 Back to Chanakya
               </Link>
             </div>
           </aside>
 
           <article
-            className="prose-article max-w-2xl min-w-0"
+            className="prose-article max-w-2xl min-w-0 mx-auto"
             dangerouslySetInnerHTML={{ __html: html }}
           />
         </div>

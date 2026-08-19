@@ -10,6 +10,7 @@ import type { Root, Element } from "hast";
 import readingTime from "reading-time";
 import fs from "fs";
 import path from "path";
+import matter from "gray-matter";
 
 export interface Heading {
   depth: number;
@@ -184,6 +185,7 @@ function rehypeCodeChrome() {
 }
 
 export async function getHeadings(markdown: string): Promise<Heading[]> {
+  const { content } = matter(markdown); // strip frontmatter first
   const headings: Heading[] = [];
   const file = await unified()
     .use(remarkParse)
@@ -205,12 +207,13 @@ export async function getHeadings(markdown: string): Promise<Heading[]> {
       });
     })
     .use(rehypeStringify)
-    .process(markdown);
+    .process(content); // ← was `markdown`
   void file;
   return headings;
 }
 
 export async function markdownToHtml(markdown: string): Promise<string> {
+  const { content } = matter(markdown); // strip frontmatter first
   const file = await unified()
     .use(remarkParse)
     .use(remarkGfm)
@@ -224,7 +227,7 @@ export async function markdownToHtml(markdown: string): Promise<string> {
     .use(rehypeHeadingLinks)
     .use(rehypeCodeChrome)
     .use(rehypeStringify)
-    .process(markdown);
+    .process(content); // ← was `markdown`
 
   return String(file);
 }
@@ -234,33 +237,41 @@ export interface PostMeta {
   title: string;
   subtitle: string;
   updated: string;
+  cover: string;
   readingMinutes: number;
 }
 
 export function getPostSource(slug: string): string {
   const file = path.join(process.cwd(), "content", `${slug}.md`);
-  return fs.readFileSync(file, "utf8");
+  const raw = fs.readFileSync(file, "utf8");
+  return raw.replace(/^\uFEFF/, ""); // strip BOM if present
 }
 
-export function getPostMeta(slug: string, markdown: string): PostMeta {
-  const stats = readingTime(markdown);
-  const meta: Record<string, PostMeta> = {
-    "integrating-stockfish-nnue": {
-      slug,
-      title: "Integrating Stockfish NNUE into Your Own Engine",
-      subtitle:
-        "Adopt Stockfish's 17.1 NNUE with efficient incremental update in 3 simple steps.",
-      updated: "August 16, 2026",
-      readingMinutes: Math.max(1, Math.round(stats.minutes)),
-    },
+export function getPostMeta(slug: string, source: string): PostMeta {
+  const { data, content } = matter(source);
+  const stats = readingTime(content);
+
+  return {
+    slug,
+    title: data.title ?? slug,
+    subtitle: data.subtitle ?? "",
+    updated: data.updated ?? "",
+    cover: data.cover ?? "/banner-4.png", // fallback keeps old behavior if a post omits it
+    readingMinutes: Math.max(1, Math.round(stats.minutes)),
   };
-  return (
-    meta[slug] ?? {
-      slug,
-      title: slug,
-      subtitle: "",
-      updated: "",
-      readingMinutes: Math.max(1, Math.round(stats.minutes)),
-    }
-  );
+}
+
+
+export function getAllPostsMeta(): PostMeta[] {
+  const contentDir = path.join(process.cwd(), "content");
+  const files = fs.readdirSync(contentDir).filter((f) => f.endsWith(".md"));
+
+  return files
+    .map((filename) => {
+      const slug = filename.replace(/\.md$/, "");
+      const source = getPostSource(slug);
+      return getPostMeta(slug, source);
+    })
+    // newest first — assumes `updated` sorts lexicographically or you swap in real Date parsing
+    .sort((a, b) => (a.updated < b.updated ? 1 : -1));
 }

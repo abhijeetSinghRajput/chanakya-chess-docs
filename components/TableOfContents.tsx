@@ -53,7 +53,7 @@ export default function TableOfContents({ headings }: { headings: Heading[] }) {
             <a
               href={`#${h.slug}`}
               onClick={(e) => handleClick(e, h.slug)}
-              className="toc-link"
+              className="toc-link truncate"
               data-active={activeSlug === h.slug}
               data-depth={h.depth}
             >

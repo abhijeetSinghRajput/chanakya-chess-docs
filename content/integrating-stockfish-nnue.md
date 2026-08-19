@@ -1,3 +1,10 @@
+---
+title: "Integrating Stockfish NNUE into Your Own Engine"
+subtitle: "Adopt Stockfish's 17.1 NNUE with efficient incremental update in 3 simple steps."
+updated: "August 20, 2026"
+cover: "/banner-4.png"
+---
+
 # Integrating Stockfish NNUE into Your Own Engine
 
 This guide shows how to bolt Stockfish's NNUE evaluation onto an existing
@@ -56,7 +63,7 @@ edit the macros themselves.
 
 Your project layout should now look like this:
 
-```
+```cpp {16}
 your-engine/
 ├── nn-1c0000000000.nnue
 ├── nn-37f18f62d772.nnue
@@ -174,15 +181,14 @@ into memory and the accumulator caches allocated. Call `initNNUE()`
 **once**, near the top of `main()`, before your UCI loop starts
 accepting commands:
 
-```cpp
+```cpp {1,5}
 #include "eval/eval_nnue.hpp"
 
 int main()
 {
-    initNNUE();          // load networks + allocate accumulator caches
-    // ... your existing startup: opening book, transposition table, etc.
-
-    uciLoop();            // or whatever your engine's main loop is called
+    initNNUE();    // load networks
+    newGame();
+    uciLoop();            
     return 0;
 }
 ```
