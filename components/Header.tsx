@@ -13,7 +13,6 @@ const Header = () => {
                         alt="Chanakya chess engine logo"
                         width={40}
                         height={40}
-                        className="rounded-md opacity-90"
                     />
                 </Link>
                 <div className="flex items-center gap-x-4">
