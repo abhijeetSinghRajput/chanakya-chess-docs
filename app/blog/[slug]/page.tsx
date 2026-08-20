@@ -8,7 +8,6 @@ import {
 } from "@/lib/markdown";
 import TableOfContents from "@/components/TableOfContents";
 import CodeCopyHandler from "@/components/CodeCopyHandler";
-import BitboardMotif from "@/components/BitboardMotif";
 import { ArrowLeftIcon, ClockIcon } from "lucide-react";
 import Image from "next/image";
 
@@ -45,7 +44,7 @@ export default async function BlogPostPage({
           <div
             className="absolute inset-0 z-[-1] w-full h-80 overflow-hidden bg-(--bg)"
             style={{
-              maskImage: "linear-gradient(black 40%, transparent 100%)",
+              maskImage: "linear-gradient(black 10%, transparent 100%)",
               WebkitMaskImage: "linear-gradient(black 40%, transparent 100%)",
             }}
           >

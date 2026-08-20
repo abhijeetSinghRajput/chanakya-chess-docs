@@ -62,7 +62,7 @@ export const ThemeToggleButton2 = ({
       type="button"
       className={cn(
         "rounded-full transition-all duration-300 active:scale-95",
-        isDark ? "bg-black text-white" : "bg-white text-black",
+        isDark ? "bg-(--bg-panel) text-white" : "bg-white text-black",
         className,
       )}
       onClick={() => setTheme(isDark ? "light" : "dark")}
@@ -127,7 +127,7 @@ export const ThemeToggleButton3 = ({
       type="button"
       className={cn(
         "rounded-full transition-all duration-300 active:scale-95",
-        isDark ? "bg-black text-white" : "bg-white text-black",
+        isDark ? "bg-(--bg-panel) text-white" : "bg-white text-black",
         className,
       )}
       onClick={() => setTheme(isDark ? "light" : "dark")}
@@ -184,7 +184,7 @@ export const ThemeToggleButton4 = ({
       type="button"
       className={cn(
         "rounded-full transition-all duration-300 active:scale-95",
-        isDark ? "bg-black text-white" : "bg-white text-black",
+        isDark ? "bg-(--bg-panel) text-white" : "bg-white text-black",
         className,
       )}
       onClick={() => setTheme(isDark ? "light" : "dark")}
@@ -247,7 +247,7 @@ export const ThemeToggleButton5 = ({
       type="button"
       className={cn(
         "rounded-full transition-all duration-300 active:scale-95",
-        isDark ? "bg-black text-white" : "bg-white text-black",
+        isDark ? "bg-(--bg-panel) text-white" : "bg-white text-black",
         className,
       )}
       onClick={() => setTheme(isDark ? "light" : "dark")}

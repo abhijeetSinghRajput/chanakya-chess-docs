@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggleButton1, ThemeToggleButton2, ThemeToggleButton3, ThemeToggleButton4, ThemeToggleButton5 } from "@/components/skipper/toggle-button";
+import Header from "@/components/Header";
 
 const SITE_URL = "https://chanakya-chess.vercel.app"; // ← swap for your real domain
 
@@ -119,7 +120,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
-          <ThemeToggleButton3 className="fixed z-50 top-4 right-4 size-10 p-1" />
+          <Header/>
+
           {children}
         </ThemeProvider>
       </body>

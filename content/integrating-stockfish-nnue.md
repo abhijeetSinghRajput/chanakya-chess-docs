@@ -210,7 +210,7 @@ Two functions are exposed from `eval_nnue.hpp`:
 
 ```cpp
 void updateNNUE(
-    int  side,              // side to move BEFORE makeMove() flips it
+    int  side,              // side to move BEFORE do_move() flips it
     int  piece,
     int  from,
     int  to,
@@ -223,13 +223,13 @@ void updateNNUE(
 void revertNNUE();
 ```
 
-Call `updateNNUE()` immediately after a successful `makeMove()`, and
-`revertNNUE()` immediately before the matching `takeMove()` — every
+Call `updateNNUE()` immediately after a successful `do_move()`, and
+`revertNNUE()` immediately before the matching `undo_move()` — every
 push needs exactly one matching pop, on every return path:
 
 ```cpp
 int sideBefore = board->side;
-if (makeMove(move) == false) continue;
+if (do_move(move) == false) continue;
 
 updateNNUE(
     sideBefore,
@@ -245,7 +245,7 @@ updateNNUE(
 // ... recurse into alphaBeta() / quiescence() ...
 
 revertNNUE();
-takeMove();
+undo_move();
 ```
 
 > **Only call `updateNNUE`/`revertNNUE` inside search** (`alphaBeta`,
@@ -309,7 +309,7 @@ Call it:
   loadPosition();
 
   for (Move move : moves)
-      makeMove(move);
+      do_move(move);
 
   resetNNUEAccumulator();   // one reset, after all moves are applied
   ```

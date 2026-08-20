@@ -22,12 +22,6 @@
   --font-mono: "JetBrains Mono", monospace;
 }
 
-/* hsl(221, 51%, 47%) heading
-hsl(220, 63%, 30%)inline
-hsl(240, 12%, 89%) bg
-hsl(40, 2%, 48%) para
-hsl(224, 36%, 74%) */
-
 .dark {
   /* ---------- Dark theme ---------- */
   --bg:           hsl(60, 14%, 10%);
@@ -93,6 +87,8 @@ body {
   color: var(--ink);
   font-size: 1.0625rem;
   line-height: 1.75;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .prose-article > * + * {
@@ -309,14 +305,13 @@ body {
   padding: 4px;
   border-radius: 14px;
   border: 1px solid var(--hairline);
-  background: rgba(255, 255, 255, 0.015);
+  background: #22211c;
 }
 
 .code-inner {
   position: relative;
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid var(--hairline-soft);
   background: var(--code-bg);
 }
 
@@ -467,21 +462,4 @@ body {
     transition: none !important;
     animation: none !important;
   }
-}
-
-
-/* Highlighted line background + left accent bar */
-[data-highlighted-line] {
-  background: color-mix(in srgb, var(--brass) 12%, transparent);
-  border-left: 2px solid var(--brass);
-  margin-left: -1rem;
-  padding-left: calc(1rem - 2px);
-}
-
-/* Optional: highlighted individual characters/words within a line,
-   via ```cpp {1} /updateNNUE/ syntax */
-[data-highlighted-chars] {
-  background: color-mix(in srgb, var(--brass) 25%, transparent);
-  border-radius: 2px;
-  padding: 0.1em 0.2em;
 }
